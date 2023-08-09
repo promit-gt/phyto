@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <report
+            id="construfacil_cierre_caja"
+            string="Cierre de caja"
+            model="sesion.ventas"
+            report_type="qweb-pdf"
+            file="sesionventas.report_cierre_caja"
+            name="sesionventas.report_cierre_caja"
+        />
+
+    </data>
+</odoo>

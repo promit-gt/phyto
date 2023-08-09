@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sesion_ventas_form" model="ir.ui.view">
+        <field name="name">sesion.ventas.form</field>
+        <field name="model">sesion.ventas</field>
+        <field name="arch" type="xml">
+            <form string="Sesion para ventas" create="0">
+                <header>
+                    <button name="action_abrir_sesion" type="object" string="Apertura de sesión" attrs="{'invisible' : [('estado', '!=', 'borrador')]}" class="oe_highlight"/>
+                    <button id="button_create_payment" name="958" type="action" string="Registrar Deposito" class="btn-primary" attrs="{'invisible' : [('estado_de_liquidacion', 'in', ['caja_cerrada','caja_abierta','liquidada_completamente'])]}"/>
+                    <button name="action_cerrar_sesion" type="object" string="Cierre de sesion" attrs="{'invisible' : [('estado', '!=', 'abierto')]}" class="oe_highlight"/>
+                    <field name="estado" widget="statusbar" statusbar_visible="borrador,abierto,cerrado"/>
+                                       
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="estado_de_liquidacion" widget="statusbar" statusbar_visible="caja_cerrada,caja_abierta,cerrada_sin_liquidar,con_diferencia,liquidada_completamente"/>
+                        </h1>
+                        <h2>
+                            <field name="nombre" readonly="1"/>
+                        </h2>
+                        
+                    </div>
+                    <group>
+                        <group>
+                            <field name="responsable_id"/>
+                            <field name="fecha"/>
+                        </group>
+                        <group>
+                            <field name="usuarios_ids" widget="many2many_tags"/>
+                            <field name="equipo_venta_id"/>
+                        </group>
+                    </group>
+                    <separator string="Facturas" attrs="{'invisible' : [('estado', '=', 'borrador')]}"/>
+                    <field name="facturas_ids" attrs="{'invisible' : [('estado', '=', 'borrador')]}"/>
+                    <separator string="Pagos" attrs="{'invisible' : [('estado', '=', 'borrador')]}"/>
+                    <field name="pagos_ids" attrs="{'invisible' : [('estado', '=', 'borrador')]}"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sesion_ventas_tree" model="ir.ui.view">
+        <field name="name">sesion.ventas.tree.view</field>
+        <field name="model">sesion.ventas</field>
+        <field name="arch" type="xml">
+            <tree string="Sesiones">
+                <field name="nombre"/>
+                <field name="responsable_id" />
+                <field name="fecha" />
+                <field name="estado" />
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_sesion_ventas_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sesion.ventas</field>
+        <field name="arch" type="xml">
+            <search string="Buscar sesiones">
+                <field name="nombre"/>
+                <field name="responsable_id"/>
+                <field name="fecha" operator="child_of"/>
+                <field name="estado"/>
+           </search>
+        </field>
+    </record>
+
+    <record id="action_sesion_ventas" model="ir.actions.act_window">
+        <field name="name">Sesiones</field>
+        <field name="res_model">sesion.ventas</field>
+        <field name="view_id" ref="view_sesion_ventas_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_sesion_ventas_filter"/>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Crear una nueva sesion
+          </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sesiones_ventas"
+            action="action_sesion_ventas"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+    
+
+</odoo>

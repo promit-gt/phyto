@@ -1,0 +1,32 @@
+<odoo>
+  <data>
+    <record id="view_register_payment_wizard_form" model="ir.ui.view">
+      <field name="name">register.payment.wizard.form</field>
+      <field name="model">register.payment.wizard</field>
+      <field name="arch" type="xml">
+        <form string="Register Payment">
+          <group>
+            <field name="caja_de_origen" required="True" domain="[('tipo_pago', 'in', ['efectivo'])]"/>
+            <field name="banco_de_deposito" required="True" domain="[('tipo_pago', 'in', ['transferencia_bancaria'])]"/>
+            <field name="fecha"/>
+            <field name="amount"/>
+            <field name="boleta"/>
+            <field name="sesion_ventas_id" required="True" domain="[('estado_de_liquidacion', 'in', ['cerrada_sin_liquidar', 'con_diferencia'])]"/>
+          </group>
+          <footer>
+            <button name="create_payment" string="Register Payment" type="object" class="btn-primary"/>
+            <button string="Cancel" class="btn-secondary" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_register_payment_wizard" model="ir.actions.act_window">
+        <field name="name">Register Payment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">register.payment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+  </data>
+</odoo>
